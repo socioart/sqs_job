@@ -20,12 +20,16 @@ module SqsJob
       @attributes = attributes
     end
 
-    def to_json(*args)
+    def as_json
       {
         id: id,
         name: name,
         attributes: attributes,
-      }.to_json(*args)
+      }
+    end
+
+    def to_json(*args)
+      as_json.to_json(*args)
     end
   end
 end

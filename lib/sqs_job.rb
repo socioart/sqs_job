@@ -7,6 +7,7 @@ module SqsJob
 end
 
 require "sqs_job/job"
+require "sqs_job/logger"
 require "sqs_job/master"
 require "sqs_job/response"
 require "sqs_job/worker"

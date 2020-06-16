@@ -17,11 +17,15 @@ module SqsJob
       @result = result
     end
 
-    def to_json(*args)
+    def as_json
       {
         job: job,
         result: result,
-      }.to_json(*args)
+      }
+    end
+
+    def to_json(*args)
+      as_json.to_json(*args)
     end
   end
 end

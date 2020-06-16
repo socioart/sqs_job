@@ -4,8 +4,8 @@ queue_prefix = "sqs_job_test"
 credentials = {profile: ENV["AWS_PROFILE"], region: "ap-northeast-1"}
 
 case ARGV.first
-when "master"
-  m = SqsJob::Master.new(queue_prefix, credentials)
+when "Manager"
+  m = SqsJob::Manager.new(queue_prefix, credentials)
   m.listen do |response|
     puts "response received (#{Time.now.iso8601(3)})"
     pp response
@@ -20,6 +20,6 @@ when "worker"
     r
   end
 else
-  m = SqsJob::Master.new(queue_prefix, credentials)
+  m = SqsJob::Manager.new(queue_prefix, credentials)
   m.add(SqsJob::Job.new("foo", {bar: rand(0..127)}))
 end

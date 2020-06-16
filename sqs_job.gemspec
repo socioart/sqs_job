@@ -6,8 +6,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["labocho"]
   spec.email         = ["labocho@penguinlab.jp"]
 
-  spec.summary       = "Master-Worker style job processing framework with Amazon SQS"
-  spec.description   = "Master-Worker style job processing framework with Amazon SQS"
+  spec.summary       = "Manager-Worker style job processing framework with Amazon SQS"
+  spec.description   = "Manager-Worker style job processing framework with Amazon SQS"
   spec.homepage      = "https://github.com/socioart/sqs_job"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")

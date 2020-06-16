@@ -1,7 +1,7 @@
 require "sqs_job/client"
 
 module SqsJob
-  class Master < Client
+  class Manager < Client
     def add(job)
       logger.info(type: "send_message", queue_url: job_queue_url, message_body: job.as_json)
       sqs.send_message(

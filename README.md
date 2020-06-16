@@ -1,6 +1,6 @@
 # SqsJob
 
-Master-Worker style job processing framework with Amazon SQS.
+Manager-Worker style job processing framework with Amazon SQS.
 
 ## Installation
 
@@ -17,9 +17,9 @@ And then execute:
 
 ## Usage
 
-### Create job (on Master)
+### Create job (on Manager)
 
-    m = SqsJob::Master.new("test_queue", aws_credentials)
+    m = SqsJob::Manager.new("test_queue", aws_credentials)
     m.add(SqsJob::Job.new("foo", {bar: rand(0..127)}))
 
 ### Receive and processing job (on Worker)
@@ -30,9 +30,9 @@ And then execute:
       job.attributes["bar"] * 2
     end
 
-### Receive result (on Master)
+### Receive result (on Manager)
 
-    m = SqsJob::Master.new("test_queue", aws_credentials)
+    m = SqsJob::Manager.new("test_queue", aws_credentials)
     m.listen do |response|
       p response.job
       p response.result

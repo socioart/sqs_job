@@ -1,28 +1,42 @@
 # SqsJob
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/sqs_job`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Master-Worker style job processing framework with Amazon SQS.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'sqs_job'
+gem "sqs_job", git: "https://github.com/socioart/sqs_job.git"
 ```
 
 And then execute:
 
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install sqs_job
 
 ## Usage
 
-TODO: Write usage instructions here
+### Create job (on Master)
+
+    m = SqsJob::Master.new("test_queue", aws_credentials)
+    m.add(SqsJob::Job.new("foo", {bar: rand(0..127)}))
+
+### Receive and processing job (on Worker)
+
+    w = SqsJob::Worker.new("test_queue", aws_credentials)
+    w.listen do |job|
+      # Processing job and return result
+      job.attributes["bar"] * 2
+    end
+
+### Receive result (on Master)
+
+    m = SqsJob::Master.new("test_queue", aws_credentials)
+    m.listen do |response|
+      p response.job
+      p response.result
+    end
 
 ## Development
 

@@ -16,6 +16,9 @@ Layout/LineLength:
 Layout/EmptyLinesAroundAccessModifier:
   EnforcedStyle: only_before
 
+Layout/RescueEnsureAlignment:
+  Enabled: false
+
 Layout/SpaceInLambdaLiteral:
   EnforcedStyle: require_space
 

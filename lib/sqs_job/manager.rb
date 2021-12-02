@@ -9,6 +9,7 @@ module SqsJob
       @manager_id = manager_id
     end
 
+    # @return [SqsJob::Job]
     def add_job(name, attributes = {})
       job = Job.new(name, attributes, manager_id: manager_id)
       logger.info(type: "send_message", queue_url: job_queue_url, message_body: job.as_json)
@@ -16,6 +17,7 @@ module SqsJob
         queue_url: job_queue_url,
         message_body: job.to_json,
       )
+      job
     end
 
     # rubocop:disable Lint/RescueException

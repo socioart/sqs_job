@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sqs_job (1.0.0)
+    sqs_job (1.0.1)
       aws-sdk-sqs (~> 1.27)
 
 GEM

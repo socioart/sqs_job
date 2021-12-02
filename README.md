@@ -19,12 +19,12 @@ And then execute:
 
 ### Create job (on Manager)
 
-    m = SqsJob::Manager.new("test_queue", aws_credentials)
-    m.add(SqsJob::Job.new("foo", {bar: rand(0..127)}))
+    m = SqsJob::Manager.new("test_queue", aws_credentials, manager_id: "foo")
+    m.add_job("foo", {bar: rand(0..127)})
 
 ### Receive and processing job (on Worker)
 
-    w = SqsJob::Worker.new("test_queue", aws_credentials)
+    w = SqsJob::Worker.new("test_queue", aws_credentials, manager_ids: %(foo))
     w.listen do |job|
       # Processing job and return result
       job.attributes["bar"] * 2
@@ -32,7 +32,7 @@ And then execute:
 
 ### Receive result (on Manager)
 
-    m = SqsJob::Manager.new("test_queue", aws_credentials)
+    m = SqsJob::Manager.new("test_queue", aws_credentials, manager_id: "foo")
     m.listen do |response|
       p response.job
       p response.result

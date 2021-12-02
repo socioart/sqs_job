@@ -1,11 +1,19 @@
 require "sqs_job/client"
+require "set"
 
 module SqsJob
   class Worker < Client
+    attr_reader :manager_ids
+
+    def initialize(*args, manager_ids:, **kargs)
+      super(*args, **kargs)
+      @manager_ids = Set.new(manager_ids.map(&:freeze))
+    end
+
     # rubocop:disable Lint/RescueException
     def listen(&block)
+      logger.debug(type: "listen", queue_url: job_queue_url, wait_time_seconds: 20)
       loop do
-        logger.debug(type: "receive_message", queue_url: job_queue_url, wait_time_seconds: 20)
         r = sqs.receive_message(
           queue_url: job_queue_url,
           wait_time_seconds: 20,
@@ -16,6 +24,9 @@ module SqsJob
           logger.info(type: "received_message", message: parsed)
 
           job = Job.deserialize(JSON.parse(message.body))
+          next unless manager_ids.include?(job.manager_id)
+
+          logger.info(type: "process_message", message: parsed)
           result = block.call(job)
           response(Response.new(job, result))
 

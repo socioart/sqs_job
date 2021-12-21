@@ -3,11 +3,8 @@ require "set"
 
 module SqsJob
   class Worker < Client
-    attr_reader :manager_ids
-
-    def initialize(*args, manager_ids:, **kargs)
+    def initialize(*args, **kargs)
       super(*args, **kargs)
-      @manager_ids = Set.new(manager_ids.map(&:freeze))
     end
 
     # rubocop:disable Lint/RescueException
@@ -24,9 +21,6 @@ module SqsJob
           logger.info(type: "received_message", message: parsed)
 
           job = Job.deserialize(JSON.parse(message.body))
-          next unless manager_ids.include?(job.manager_id)
-
-          logger.info(type: "process_message", message: parsed)
           result = block.call(job)
           response(Response.new(job, result))
 

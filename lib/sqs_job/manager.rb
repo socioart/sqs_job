@@ -2,16 +2,9 @@ require "sqs_job/client"
 
 module SqsJob
   class Manager < Client
-    attr_reader :manager_id
-
-    def initialize(*args, manager_id:, **kargs)
-      super(*args, **kargs)
-      @manager_id = manager_id
-    end
-
     # @return [SqsJob::Job]
     def add_job(name, attributes = {})
-      job = Job.new(name, attributes, manager_id: manager_id)
+      job = Job.new(name, attributes)
       logger.info(type: "send_message", queue_url: job_queue_url, message_body: job.as_json)
       sqs.send_message(
         queue_url: job_queue_url,
@@ -34,9 +27,6 @@ module SqsJob
           logger.info(type: "received_message", message: parsed)
 
           response = Response.deserialize(parsed)
-          next unless response.job.manager_id == manager_id
-
-          logger.info(type: "process_message", message: parsed)
           block.call(response)
 
           logger.debug(type: "delete_message", queue_url: result_queue_url, receipt_handle: message.receipt_handle)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sqs_job (1.0.1)
+    sqs_job (1.1.0)
       aws-sdk-sqs (~> 1.27)
 
 GEM
@@ -9,7 +9,7 @@ GEM
   specs:
     ast (2.4.1)
     aws-eventstream (1.2.0)
-    aws-partitions (1.538.0)
+    aws-partitions (1.542.0)
     aws-sdk-core (3.124.0)
       aws-eventstream (~> 1, >= 1.0.2)
       aws-partitions (~> 1, >= 1.525.0)
